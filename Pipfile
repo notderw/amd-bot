@@ -1,0 +1,19 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+
+[packages]
+asyncpraw = "*"
+derw = {editable = true, git = "https://github.com/notderw/python-util.git"}
+pyyaml = "*"
+pydantic = "*"
+backoff = "*"
+
+[requires]
+python_version = "3.8"
+
+[scripts]
+bot = "python bot.py"
