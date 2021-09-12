@@ -68,6 +68,9 @@ class AMDBot:
         if submission.approved_by:
             return False
 
+
+        await self.subreddit.load()
+
         moderators = await self.subreddit.moderators()
         if submission.author in moderators:
             return False
@@ -138,6 +141,8 @@ class AMDBot:
         log.info(f'Logged in as {me.name} - {me.id}')
 
         self.subreddit = subreddit = await self.reddit.subreddit(SUBREDDIT)
+        await self.subreddit.load()
+
         log.info(f'Watching /r/{subreddit.display_name}')
 
         await self._load_config()
