@@ -71,7 +71,7 @@ class AMDBot:
 
         await self.subreddit.load()
 
-        moderators = await self.subreddit.moderators()
+        moderators = await self.subreddit.moderator()
         if submission.author in moderators:
             return False
 
