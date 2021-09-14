@@ -8,8 +8,10 @@ from datetime import datetime, timedelta
 from typing import List
 
 import asyncpraw
+import backoff
 import yaml
 
+from asyncprawcore import RequestException
 from pydantic import BaseModel
 from derw import makeLogger
 
@@ -149,7 +151,11 @@ class AMDBot:
         #     print(f'{r.id} - {r.title}')
         # return
 
-        async for sub in subreddit.stream.submissions(skip_existing=True):
+        await self.watch_submissions()
+
+    @backoff.on_exception(backoff.expo, RequestException, max_time=300)
+    async def watch_submissions(self):
+        async for sub in self.subreddit.stream.submissions(skip_existing=True):
             asyncio.create_task(self.handler(sub))
 
     async def close(self) -> None:
