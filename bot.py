@@ -11,7 +11,7 @@ import asyncpraw
 import backoff
 import yaml
 
-from asyncprawcore import RequestException
+from asyncprawcore import AsyncPrawcoreException
 from pydantic import BaseModel
 from derw import makeLogger
 
@@ -153,7 +153,7 @@ class AMDBot:
 
         await self.watch_submissions()
 
-    @backoff.on_exception(backoff.expo, RequestException, max_time=300)
+    @backoff.on_exception(backoff.expo, AsyncPrawcoreException, max_time=300)
     async def watch_submissions(self):
         async for sub in self.subreddit.stream.submissions(skip_existing=True):
             asyncio.create_task(self.handler(sub))
