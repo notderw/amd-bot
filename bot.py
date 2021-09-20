@@ -153,7 +153,7 @@ class AMDBot:
 
         await self.watch_submissions()
 
-    @backoff.on_exception(backoff.expo, AsyncPrawcoreException, max_time=300)
+    @backoff.on_exception(backoff.expo, AsyncPrawcoreException)
     async def watch_submissions(self):
         async for sub in self.subreddit.stream.submissions(skip_existing=True):
             asyncio.create_task(self.handler(sub))
