@@ -40,6 +40,9 @@ class Config(BaseModel):
     battlestation_flairs: List[str]
     battlestation_rr: str
 
+    rumor_flair: str
+    rumor_message: str
+
 
 class AMDBot:
     def __init__(self) -> None:
@@ -90,6 +93,12 @@ class AMDBot:
             log.debug(f'{submission.shortlink} - [{submission.link_flair_text}] {submission.title}')
 
             if await self.is_ts(submission):
+                return
+
+            if hasattr(submission, 'link_flair_template_id') and \
+                    submission.link_flair_template_id == self.config.rumor_flair:
+                comment = await submission.reply(self.config.rumor_message)
+                await comment.mod.distinguish(sticky=True)
                 return
 
             if not submission.link_flair_text:
