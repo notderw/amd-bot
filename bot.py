@@ -34,7 +34,7 @@ class Config(BaseModel):
     add_flair_subject: str
     add_flair_message: str
 
-    tech_support_flair: str
+    tech_support_flairs: List[str]
     tech_support_rr: str
 
     battlestation_flairs: List[str]
@@ -69,7 +69,7 @@ class AMDBot:
         if not hasattr(submission, "link_flair_template_id"):
             return False
 
-        if submission.link_flair_template_id != self.config.tech_support_flair:
+        if submission.link_flair_template_id not in self.config.tech_support_flairs:
             return False
 
         if submission.approved_by:
